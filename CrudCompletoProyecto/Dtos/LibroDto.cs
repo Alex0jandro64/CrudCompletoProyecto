@@ -14,7 +14,7 @@ namespace CrudCompletoProyecto.Dtos
         String autor, titulo, isbn;
 
         //Constructores
-        public LibroDto(long id_libro, int edicion, string autor, string titulo, string isbn)
+        public LibroDto(long id_libro, string titulo, string autor, string isbn, int edicion)
         {
             this.id_libro = id_libro;
             this.edicion = edicion;
