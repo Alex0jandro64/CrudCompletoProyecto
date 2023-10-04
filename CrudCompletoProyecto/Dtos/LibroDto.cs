@@ -23,8 +23,9 @@ namespace CrudCompletoProyecto.Dtos
             this.isbn = isbn;
         }
 
-        public LibroDto()
+        public LibroDto(long id_libro)
         {
+            this.id_libro = id_libro;
         }
 
         //Contructores

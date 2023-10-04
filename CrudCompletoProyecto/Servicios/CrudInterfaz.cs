@@ -11,7 +11,9 @@ namespace CrudCompletoProyecto.Servicios
     internal interface CrudInterfaz
     {
 
-        NpgsqlConnection generarConexionPostgresql();
+        NpgsqlConnection generarConexion();
         List<LibroDto> seccionarTodosLibros(NpgsqlConnection conexion);
+        void insertarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros);
+        void eliminarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros);
     }
 }

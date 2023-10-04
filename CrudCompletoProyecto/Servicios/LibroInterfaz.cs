@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrudCompletoProyecto.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace CrudCompletoProyecto.Servicios
 {
     internal interface LibroInterfaz
     {
+        List<LibroDto> nuevoLibro(List<LibroDto> listaLibros);
+        List<LibroDto> eliminarLibro(List<LibroDto> listaLibros);
     }
 }

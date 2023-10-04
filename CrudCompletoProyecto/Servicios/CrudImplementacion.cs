@@ -1,4 +1,5 @@
 ﻿using CrudCompletoProyecto.Dtos;
+using CrudCompletoProyecto.Util;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,10 @@ namespace CrudCompletoProyecto.Servicios
     internal class CrudImplementacion : CrudInterfaz
     {
 
-        public NpgsqlConnection generarConexionPostgresql()
+        public NpgsqlConnection generarConexion()
         {
             //Se lee la cadena de conexión a Postgresql del archivo de configuración
             string stringConexionPostgresql = ConfigurationManager.ConnectionStrings["stringConexion"].ConnectionString;
-            Console.WriteLine("[INFORMACIÓN-ConexionPostgresqlImplementacion-generarConexionPostgresql] Cadena conexión: " + stringConexionPostgresql);
-
             NpgsqlConnection conexion = null;
             string estado = "";
 
@@ -32,7 +31,7 @@ namespace CrudCompletoProyecto.Servicios
                     if (estado.Equals("Open"))
                     {
 
-                        Console.WriteLine("[INFORMACIÓN-ConexionPostgresqlImplementacion-generarConexionPostgresql] Estado conexión: " + estado);
+                        Console.WriteLine("[INFORMACIÓN-CrudImplementacion-generarConexionPostgresql] Estado conexión: " + estado);
 
                     }
                     else
@@ -42,7 +41,7 @@ namespace CrudCompletoProyecto.Servicios
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("[ERROR-ConexionPostgresqlImplementacion-generarConexionPostgresql] Error al generar la conexión:" + e);
+                    Console.WriteLine("[ERROR-CrudImplementacion-generarConexionPostgresql] Error al generar la conexión:" + e);
                     conexion = null;
                     return conexion;
 
@@ -65,9 +64,9 @@ namespace CrudCompletoProyecto.Servicios
                 //Paso de DataReader a lista de alumnoDTO
                 listaLibros = aDto.readerALibroDto(resultadoConsulta);
                 int cont = listaLibros.Count();
-                Console.WriteLine("[INFORMACIÓN-ConsultasPostgresqlImplementacion-seccionarTodosLibros] Número de libros: " + cont);
+                Console.WriteLine("[INFORMACIÓN-CrudImplementacion-seccionarTodosLibros] Número de libros: " + cont);
 
-                Console.WriteLine("[INFORMACIÓN-ConsultasPostgresqlImplementacion-seccionarTodosLibros] Cierre conexión y conjunto de datos");
+                Console.WriteLine("[INFORMACIÓN-CrudImplementacion-seccionarTodosLibros] Cierre conexión y conjunto de datos");
                 conexion.Close();
                 resultadoConsulta.Close();
 
@@ -75,11 +74,107 @@ namespace CrudCompletoProyecto.Servicios
             catch (Exception e)
             {
 
-                Console.WriteLine("[ERROR-ConsultasPostgresqlImplementacion-seccionarTodosLibros] Error al ejecutar consulta: " + e);
+                Console.WriteLine("[ERROR-CrudImplementacion-seccionarTodosLibros] Error al ejecutar consulta: " + e);
                 conexion.Close();
 
             }
             return listaLibros;
+        }
+
+        public void insertarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros)
+        {
+            
+            try
+            {
+                //Se define y ejecuta la consulta Select
+                string insertSql = "INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo, autor, isbn, edicion) VALUES ";
+                int auxValor = 1;
+                for(int i = 0; i < listaLibros.Count; i++)
+                {
+                    insertSql = insertSql + "(@valor"+(auxValor++)+ ", @valor"+(auxValor++)+ ", @valor"+(auxValor++)+", @valor"+(auxValor++)+")";
+                    if (i != listaLibros.Count-1)
+                    {
+                        insertSql = insertSql + ",";
+                    }
+                    
+                }
+
+
+
+
+                using (NpgsqlCommand command = new NpgsqlCommand(insertSql, conexion))
+                {
+                    int aux = 1;
+                    // Definir los parámetros y sus valores
+                    for (int i = 0; i < listaLibros.Count; i++)
+                    {
+                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Titulo);
+                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Autor);
+                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Isbn);
+                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Edicion);
+                    }
+                    
+
+                    try
+                    {
+                        // Ejecutar la consulta de inserción
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Console.WriteLine($"Filas afectadas: {rowsAffected}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+                //Paso de DataReader a lista de alumnoDTO
+                conexion.Close();
+
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("[ERROR-CrudImplementacion-seccionarTodosLibros] Error al ejecutar consulta: " + e);
+                conexion.Close();
+
+            }
+        }
+
+        public void eliminarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros)
+        {
+
+            try
+            {
+                //Se define y ejecuta la consulta Select
+                string insertSql = "DELETE FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro = @valor1";
+              
+
+                using (NpgsqlCommand command = new NpgsqlCommand(insertSql, conexion))
+                {
+                    // Definir los parámetros y sus valores
+                        command.Parameters.AddWithValue("@valor1", listaLibros[0].Id_libro);
+
+                    try
+                    {
+                        // Ejecutar la consulta de inserción
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Console.WriteLine($"Filas afectadas: {rowsAffected}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+                }
+                //Paso de DataReader a lista de alumnoDTO
+                conexion.Close();
+
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine("[ERROR-CrudImplementacion-seccionarTodosLibros] Error al ejecutar consulta: " + e);
+                conexion.Close();
+
+            }
         }
     }
 }
