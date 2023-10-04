@@ -13,6 +13,7 @@ namespace CrudCompletoProyecto
     {
         static void Main(string[] args)
         {
+
             ADto adto = new ADto();
             Utilidades utilidad = new Utilidades();
             CrudInterfaz crud1 = new CrudImplementacion();
