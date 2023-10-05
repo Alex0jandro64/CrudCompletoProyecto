@@ -82,11 +82,14 @@ namespace CrudCompletoProyecto.Servicios
 
         public int modificarLibro(List<LibroDto> listaLibros)
         {
+            int campo=0;
+            try
+            {
             long id_libro = Utilidades.pideId();
-            int campo = Utilidades.pideIdCamposAModificar();
+            campo = Utilidades.pideIdCamposAModificar();
             LibroDto libro1 = new LibroDto(id_libro);
-
-            switch (campo)
+            
+                switch (campo)
             {
                 case 1:
                     libro1.Titulo = (Utilidades.pideTitulo());
@@ -103,7 +106,13 @@ namespace CrudCompletoProyecto.Servicios
             }
 
             listaLibros.Add(libro1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[Error-LibroImplementacion-modificarLibro]-Error al añadir los datos a la lista");
+            }
             return campo;
+            
         }
     }
 }
