@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CrudCompletoProyecto.Dtos
 {
+    /// <summary>
+    /// Clase de el objeto libro
+    /// </summary>
     internal class LibroDto
     {
         //Atributos

@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace CrudCompletoProyecto.Util
 {
+    /// <summary>
+    /// Clase que contiene los metodos que transforman los DAO a DTO
+    /// </summary>
     internal class ADto
     {
-
+        /// <summary>
+        /// Metodo que pasa el dataReader DAO a una lista de Objetos DTO
+        /// </summary>
+        /// <param name="resultadoConsulta"></param>
+        /// <returns></returns>
         public List<LibroDto> readerALibroDto(NpgsqlDataReader resultadoConsulta)
         {
             List<LibroDto> listaLibros = new List<LibroDto>();

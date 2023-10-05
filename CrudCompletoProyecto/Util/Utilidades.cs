@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace CrudCompletoProyecto.Util
 {
+    /// <summary>
+    /// Clase que contiene metodos utiles
+    /// </summary>
     internal class Utilidades
     {
         public void imprimirListaLibros(List<LibroDto> listaLibros)
