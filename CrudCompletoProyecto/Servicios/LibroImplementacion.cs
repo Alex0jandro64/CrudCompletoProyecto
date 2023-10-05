@@ -11,7 +11,7 @@ namespace CrudCompletoProyecto.Servicios
     internal class LibroImplementacion : LibroInterfaz
     {
 
-        public List<LibroDto> nuevoLibro(List<LibroDto> listaLibros)
+        public void nuevoLibro(List<LibroDto> listaLibros)
         {
             try
             {
@@ -61,12 +61,11 @@ namespace CrudCompletoProyecto.Servicios
                 Console.WriteLine("[Error-LibroImplementacion-nuevoLibro] - Error al capturar los datos");
             }
 
-            return listaLibros;
 
 
         }
 
-        public List<LibroDto> eliminarLibro(List<LibroDto> listaLibros)
+        public void eliminarLibro(List<LibroDto> listaLibros)
         {
             try
             {
@@ -79,8 +78,32 @@ namespace CrudCompletoProyecto.Servicios
             {
                 Console.WriteLine("[Error-LibroImplentacion-eliminarLibro] - Error al capturar el dato");
             }
-            return listaLibros;
         }
 
+        public int modificarLibro(List<LibroDto> listaLibros)
+        {
+            long id_libro = Utilidades.pideId();
+            int campo = Utilidades.pideIdCamposAModificar();
+            LibroDto libro1 = new LibroDto(id_libro);
+
+            switch (campo)
+            {
+                case 1:
+                    libro1.Titulo = (Utilidades.pideTitulo());
+                    break;
+                case 2:
+                    libro1.Autor = (Utilidades.pideAutor());
+                    break;
+                case 3:
+                    libro1.Isbn = (Utilidades.pideIsbn());
+                    break;
+                case 4:
+                    libro1.Edicion = (Utilidades.pideEdicion());
+                    break;
+            }
+
+            listaLibros.Add(libro1);
+            return campo;
+        }
     }
 }

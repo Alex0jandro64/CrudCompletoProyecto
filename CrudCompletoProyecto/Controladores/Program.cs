@@ -43,16 +43,26 @@ namespace CrudCompletoProyecto
 
                     case 2:
                         Console.Clear();
-                        crud1.insertarLibro(crud1.generarConexion(),libroImpl.nuevoLibro(listaLibros));
+                        libroImpl.nuevoLibro(listaLibros);
+                        crud1.insertarLibro(crud1.generarConexion(),listaLibros);
+                        Console.WriteLine("\n\nPulse una tecla para continuar");
+                        Console.ReadLine();
                         break;
 
                     case 3:
                         Console.Clear();
+                        int campo = libroImpl.modificarLibro(listaLibros);
+                        crud1.ModificarLibro(crud1.generarConexion(),listaLibros,campo);
+                        Console.WriteLine("\n\nPulse una tecla para continuar");
+                        Console.ReadLine();
                         break;
 
                     case 4:
                         Console.Clear();
-                        crud1.eliminarLibro(crud1.generarConexion(),libroImpl.eliminarLibro(listaLibros));
+                        libroImpl.eliminarLibro(listaLibros);
+                        crud1.eliminarLibro(crud1.generarConexion(),listaLibros);
+                        Console.WriteLine("\n\nPulse una tecla para continuar");
+                        Console.ReadLine();
                         break;
                 }
             } while (opcion != 0);

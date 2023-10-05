@@ -16,7 +16,7 @@ namespace CrudCompletoProyecto.Util
             Console.WriteLine("\n\n");
             foreach (LibroDto libro in listaLibros)
             {
-                Console.WriteLine("{0}, {1}, {2}, {3}, {4}", libro.Id_libro,libro.Titulo,libro.Autor,libro.Edicion,libro.Isbn);
+                Console.WriteLine("{0}, {1}, {2}, {3}, {4}", libro.Id_libro, libro.Titulo, libro.Autor, libro.Edicion, libro.Isbn);
             }
         }
         public void imprimirMenu()
@@ -152,6 +152,18 @@ namespace CrudCompletoProyecto.Util
             } while (!ok || estaVacio(id.ToString()));
 
             return id;
+        }
+
+        public static int pideIdCamposAModificar()
+        {
+            Console.WriteLine("Que campo quiere seleccionar");
+            Console.WriteLine("1.-Titulo");
+            Console.WriteLine("2.-Autor");
+            Console.WriteLine("3.-Isbn");
+            Console.WriteLine("4.-Edicion");
+
+            int opcion = capturaOpcion(1, 4);
+            return opcion;
         }
     }
 }

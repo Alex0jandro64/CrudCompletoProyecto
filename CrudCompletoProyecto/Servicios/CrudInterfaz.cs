@@ -15,5 +15,6 @@ namespace CrudCompletoProyecto.Servicios
         List<LibroDto> seccionarTodosLibros(NpgsqlConnection conexion);
         void insertarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros);
         void eliminarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros);
+        void ModificarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros, int campo);
     }
 }

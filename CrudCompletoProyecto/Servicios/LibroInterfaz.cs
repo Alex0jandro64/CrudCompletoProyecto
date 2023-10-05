@@ -9,7 +9,8 @@ namespace CrudCompletoProyecto.Servicios
 {
     internal interface LibroInterfaz
     {
-        List<LibroDto> nuevoLibro(List<LibroDto> listaLibros);
-        List<LibroDto> eliminarLibro(List<LibroDto> listaLibros);
+        void nuevoLibro(List<LibroDto> listaLibros);
+        void eliminarLibro(List<LibroDto> listaLibros);
+        int modificarLibro(List<LibroDto> listaLibros);
     }
 }

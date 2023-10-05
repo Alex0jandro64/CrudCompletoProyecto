@@ -83,20 +83,20 @@ namespace CrudCompletoProyecto.Servicios
 
         public void insertarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros)
         {
-            
+
             try
             {
                 //Se define y ejecuta la consulta Select
                 string insertSql = "INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo, autor, isbn, edicion) VALUES ";
                 int auxValor = 1;
-                for(int i = 0; i < listaLibros.Count; i++)
+                for (int i = 0; i < listaLibros.Count; i++)
                 {
-                    insertSql = insertSql + "(@valor"+(auxValor++)+ ", @valor"+(auxValor++)+ ", @valor"+(auxValor++)+", @valor"+(auxValor++)+")";
-                    if (i != listaLibros.Count-1)
+                    insertSql = insertSql + "(@valor" + (auxValor++) + ", @valor" + (auxValor++) + ", @valor" + (auxValor++) + ", @valor" + (auxValor++) + ")";
+                    if (i != listaLibros.Count - 1)
                     {
                         insertSql = insertSql + ",";
                     }
-                    
+
                 }
 
 
@@ -108,12 +108,12 @@ namespace CrudCompletoProyecto.Servicios
                     // Definir los parámetros y sus valores
                     for (int i = 0; i < listaLibros.Count; i++)
                     {
-                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Titulo);
-                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Autor);
-                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Isbn);
-                        command.Parameters.AddWithValue("@valor"+aux++, listaLibros[i].Edicion);
+                        command.Parameters.AddWithValue("@valor" + aux++, listaLibros[i].Titulo);
+                        command.Parameters.AddWithValue("@valor" + aux++, listaLibros[i].Autor);
+                        command.Parameters.AddWithValue("@valor" + aux++, listaLibros[i].Isbn);
+                        command.Parameters.AddWithValue("@valor" + aux++, listaLibros[i].Edicion);
                     }
-                    
+
 
                     try
                     {
@@ -146,12 +146,12 @@ namespace CrudCompletoProyecto.Servicios
             {
                 //Se define y ejecuta la consulta Select
                 string insertSql = "DELETE FROM gbp_almacen.gbp_alm_cat_libros WHERE id_libro = @valor1";
-              
+
 
                 using (NpgsqlCommand command = new NpgsqlCommand(insertSql, conexion))
                 {
                     // Definir los parámetros y sus valores
-                        command.Parameters.AddWithValue("@valor1", listaLibros[0].Id_libro);
+                    command.Parameters.AddWithValue("@valor1", listaLibros[0].Id_libro);
 
                     try
                     {
@@ -174,6 +174,83 @@ namespace CrudCompletoProyecto.Servicios
                 Console.WriteLine("[ERROR-CrudImplementacion-seccionarTodosLibros] Error al ejecutar consulta: " + e);
                 conexion.Close();
 
+            }
+        }
+
+        public void ModificarLibro(NpgsqlConnection conexion, List<LibroDto> listaLibros, int campo)
+        {
+            try
+            {
+                // Sentencia SQL para la actualización
+                string updateSql = "UPDATE gbp_almacen.gbp_alm_cat_libros SET ";
+
+                switch (campo)
+                {
+                    case 1:
+                        updateSql += "titulo = @valor";
+                        break;
+                    case 2:
+                        updateSql += "autor = @valor";
+                        break;
+                    case 3:
+                        updateSql += "isbn = @valor";
+                        break;
+                    case 4:
+                        updateSql += "edicion = @valor";
+                        break;
+                    default:
+                        Console.WriteLine("Campo no válido.");
+                        return;
+                }
+
+                updateSql += " WHERE id_libro = @id_libro";
+
+                using (NpgsqlCommand command = new NpgsqlCommand(updateSql, conexion))
+                {
+
+                    foreach (LibroDto libroDto in listaLibros)
+                    {
+                        command.Parameters.Clear();
+                        switch (campo)
+                        {
+                            case 1:
+                                command.Parameters.AddWithValue("@valor", libroDto.Titulo);
+                                break;
+                            case 2:
+                                command.Parameters.AddWithValue("@valor", libroDto.Autor);
+                                break;
+                            case 3:
+                                command.Parameters.AddWithValue("@valor", libroDto.Isbn);
+                                break;
+                            case 4:
+                                command.Parameters.AddWithValue("@valor", libroDto.Edicion.ToString());
+                                break;
+                        }
+                        command.Parameters.AddWithValue("@id_libro", libroDto.Id_libro);
+
+                        try
+                        {
+                            // Ejecutar la consulta de actualización
+                            int rowsAffected = command.ExecuteNonQuery();
+                            Console.WriteLine($"Filas afectadas: {rowsAffected}");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error: {ex.Message}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR-CrudImplementacion-ModificarLibro] Error al ejecutar consulta: " + e);
+            }
+            finally
+            {
+                if (conexion.State == System.Data.ConnectionState.Open)
+                {
+                    conexion.Close();
+                }
             }
         }
     }
