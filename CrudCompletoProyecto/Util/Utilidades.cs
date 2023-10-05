@@ -10,7 +10,6 @@ namespace CrudCompletoProyecto.Util
 {
     internal class Utilidades
     {
-
         public void imprimirListaLibros(List<LibroDto> listaLibros)
         {
             Console.WriteLine("\n\n");
@@ -153,7 +152,6 @@ namespace CrudCompletoProyecto.Util
 
             return id;
         }
-
         public static int pideIdCamposAModificar()
         {
             Console.WriteLine("Que campo quiere seleccionar");
